@@ -1,7 +1,7 @@
 # z-experiments
 
-https://github.com/Tongyi-MAI/Z-Image
-https://tongyi-mai.github.io/Z-Image-blog/
+- https://github.com/Tongyi-MAI/Z-Image
+- https://tongyi-mai.github.io/Z-Image-blog/
 
 ## Setup
 
