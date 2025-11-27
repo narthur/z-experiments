@@ -1,0 +1,4 @@
+accelerate>=0.17.0
+torch
+git+https://github.com/huggingface/diffusers
+transformers
