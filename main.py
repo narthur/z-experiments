@@ -12,7 +12,23 @@ parser.add_argument(
     default="Young Chinese woman in red Hanfu, intricate embroidery. Impeccable makeup, red floral forehead pattern. Elaborate high bun, golden phoenix headdress, red flowers, beads. Holds round folding fan with lady, trees, bird. Neon lightning-bolt lamp (⚡️), bright yellow glow, above extended left palm. Soft-lit outdoor night background, silhouetted tiered pagoda (西安大雁塔), blurred colorful distant lights.",
     help="Text prompt for image generation"
 )
+parser.add_argument(
+    "--prompt-file",
+    type=str,
+    default=None,
+    help="Path to a file containing the prompt text (takes precedence over --prompt)"
+)
 args = parser.parse_args()
+
+# If prompt-file is provided, read its contents and use as prompt
+if args.prompt_file:
+    prompt_path = Path(args.prompt_file)
+    if not prompt_path.exists():
+        raise FileNotFoundError(f"Prompt file not found: {args.prompt_file}")
+    with open(prompt_path, 'r', encoding='utf-8') as f:
+        prompt = f.read().strip()
+else:
+    prompt = args.prompt
 
 # 1. Load the pipeline
 # Use bfloat16 for optimal performance on supported GPUs
@@ -38,7 +54,7 @@ pipe.enable_sequential_cpu_offload()
 
 # 2. Generate Image
 image = pipe(
-    prompt=args.prompt,  # Use the parsed argument
+    prompt=prompt,  # Use the prompt (from file or argument)
     height=1024,
     width=1024,
     num_inference_steps=9,  # This actually results in 8 DiT forwards
