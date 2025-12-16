@@ -18,6 +18,18 @@ parser.add_argument(
     default=None,
     help="Path to a file containing the prompt text (takes precedence over --prompt)"
 )
+parser.add_argument(
+    "--width", "-W",
+    type=int,
+    default=1024,
+    help="Width of the generated image (default: 1024)"
+)
+parser.add_argument(
+    "--height", "-H",
+    type=int,
+    default=1024,
+    help="Height of the generated image (default: 1024)"
+)
 args = parser.parse_args()
 
 # If prompt-file is provided, read its contents and use as prompt
@@ -55,8 +67,8 @@ pipe.enable_sequential_cpu_offload()
 # 2. Generate Image
 image = pipe(
     prompt=prompt,  # Use the prompt (from file or argument)
-    height=1024,
-    width=1024,
+    height=args.height,
+    width=args.width,
     num_inference_steps=9,  # This actually results in 8 DiT forwards
     guidance_scale=0.0,     # Guidance should be 0 for the Turbo models
     generator=torch.Generator("cuda").manual_seed(42),
